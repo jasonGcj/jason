@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.mapper.TransportMapper">
+
+    <sql id="transport_list">
+            T.ID AS id,
+            T.DRIVER_NAME AS driverName,
+            T.DRIVER_PHONE AS driverPhone,
+            T.DRIVER_CODE AS driverCode,
+            T.VEHICLE_NO AS vehicleNo,
+            T.CREATE_TIME AS creatTime
+    </sql>
+	
+    <select id="query" resultType="com.jason.pojo.TransportTaskEntity">
+        SELECT
+            <include refid="transport_list"/>
+        FROM
+            T_TRANSPORT_TASK T
+            <if test="id !=null and id!=''">
+                where T.ID = #{id}
+            </if>
+    </select>
+
+    <insert id="save" parameterType="com.jason.pojo.TransportTaskEntity">
+        INSERT INTO
+        T_TRANSPORT_TASK (ID,DRIVER_NAME,DRIVER_PHONE,DRIVER_CODE,VEHICLE_NO,CREATE_TIME)
+        VALUES (#{id},#{driverName},#{driverPhone},#{driverCode},#{vehicleNo},#{creatTime})
+        ON DUPLICATE KEY UPDATE
+        <if test="driverName!=null">
+            DRIVER_NAME=#{driverName,jdbcType=VARCHAR},
+        </if>
+       <if test="driverPhone!=null">
+            DRIVER_PHONE=#{driverPhone,jdbcType=INTEGER},
+        </if>
+        <if test="driverCode!=null">
+            DRIVER_CODE=#{driverCode,jdbcType=VARCHAR},
+        </if>
+        <if test="vehicleNo!=null">
+            VEHICLE_NO=#{vehicleNo,jdbcType=VARCHAR},
+        </if>
+        <if test="creatTime!=null">
+            CREATE_TIME=#{creatTime,jdbcType=TIMESTAMP}
+        </if>
+    </insert>
+
+    <delete id="dele" parameterType="com.jason.pojo.TransportTaskEntity">
+        DELETE FROM T_TRANSPORT_TASK WHERE
+        <if test="id!=null and id!=''">
+          ID=#{id,jdbcType=VARCHAR}
+        </if>
+    </delete>
+
+    <!--<update id="updateInfo" parameterType="com.deppon.demo.domain.TransportTaskEntity">
+      UPDATE T_TRANSPORT_TASK
+      SET DRIVER_NAME=#{driverName},DRIVER_PHONE=#{driverPhone},
+      DRIVER_CODE=#{driverCode},VEHICLE_NO=#{vehicleNo},CREATE_TIME=#{creatTime}
+      WHERE ID=#{id}
+    </update>-->
+</mapper>

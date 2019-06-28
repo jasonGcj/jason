@@ -1,0 +1,16 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: transport-provider
+  datasource:
+    username: root
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sboot?characterEncoding=utf-8&serverTimezone=UTC
+mybatis:
+    mapper-locations: classpath:static/mybatis/*.xml
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8090/eureka
